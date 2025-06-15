@@ -32,9 +32,10 @@
   <!-- START screen -->
   <div id="start-screen" class="flex flex-col items-center">
     <button id="start-btn"
-      class="font-pixel text-green-400 text-xl uppercase border border-green-400 px-6 py-3 rounded hover:bg-green-400 hover:text-black transition">
+      class="font-pixel text-[#00A36C] text-2xl uppercase border border-[#00A36C] px-6 py-3 rounded hover:bg-[#00A36C] hover:text-black transition animate-bounce">
       start
     </button>
+    <p class="font-pixel text-sm mt-2 text-center">(Press the Start Button)</p>
   </div>
 
   <!-- MESSAGE screen -->
@@ -43,11 +44,20 @@
        class="font-pixel text-center text-sm sm:text-base md:text-lg leading-snug opacity-0 transition-opacity duration-1000"></p>
   </div>
 
-  <!-- END screen: flower + greeting -->
-  <div id="end-screen" class="hidden flex flex-col items-center">
-    <!-- Replace pixel-art flower with the attached image -->
+  <!-- FLOWER screen -->
+  <div id="flower-screen" class="hidden flex flex-col items-center">
     <img src="flower.png" alt="Flower" class="pixelated transform scale-6" />
-    <p class="font-pixel text-xl mt-4">Thank you for everything DADA!</p>
+    <p class="font-pixel text-xl mt-4 text-center">Thank you for everything DADA!</p>
+  </div>
+
+  <!-- END screen: Happy Father's Day -->
+  <div id="end-screen" class="hidden flex flex-col items-center">
+    <p class="font-pixel text-2xl mt-2 text-center">Happy Father's Day!</p>
+  </div>
+
+  <!-- FLYING KISS screen -->
+  <div id="kiss-screen" class="hidden flex flex-col items-center">
+    <img src="emoji.png" alt="Flying Kiss Emoji" class="pixelated transform scale-6" />
   </div>
 
   <!-- JavaScript to handle the sequence -->
@@ -62,7 +72,9 @@
     const startScreen = document.getElementById('start-screen');
     const msgScreen   = document.getElementById('message-screen');
     const messageEl   = document.getElementById('message');
+    const flowerScreen = document.getElementById('flower-screen');
     const endScreen   = document.getElementById('end-screen');
+    const kissScreen  = document.getElementById('kiss-screen');
 
     startBtn.addEventListener('click', () => {
       startScreen.classList.add('hidden');
@@ -72,11 +84,19 @@
 
     function showSentence(idx) {
       if (idx >= sentences.length) {
-        // all done → show flower & greeting
+        // all done → show flower screen
         messageEl.classList.add('opacity-0');
         setTimeout(() => {
           msgScreen.classList.add('hidden');
-          endScreen.classList.remove('hidden');
+          flowerScreen.classList.remove('hidden');
+          setTimeout(() => {
+            flowerScreen.classList.add('hidden');
+            endScreen.classList.remove('hidden');
+            setTimeout(() => {
+              endScreen.classList.add('hidden');
+              kissScreen.classList.remove('hidden');
+            }, 3000); // Show Happy Father's Day screen for 3 seconds
+          }, 3000); // Show flower screen for 3 seconds
         }, 500);
         return;
       }
@@ -84,12 +104,12 @@
       messageEl.classList.remove('opacity-0');
       messageEl.textContent = sentences[idx];
       messageEl.classList.add('opacity-100');
-      // wait 2.5s, then fade out and next
+      // wait 3.75s, then fade out and next
       setTimeout(() => {
         messageEl.classList.remove('opacity-100');
         messageEl.classList.add('opacity-0');
         setTimeout(() => showSentence(idx + 1), 500);
-      }, 2500);
+      }, 3750);
     }
   </script>
 </body>
